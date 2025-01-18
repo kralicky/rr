@@ -121,7 +121,9 @@ static inline const char* extract_file_name(const char* s) {
 #endif
 
 /* Must match generate_rr_page.py */
+#ifndef RR_PAGE_ADDR
 #define RR_PAGE_ADDR 0x70000000
+#endif
 #ifdef __aarch64__
 #define PRELOAD_LIBRARY_PAGE_SIZE 65536
 #else
@@ -189,7 +191,6 @@ static inline const char* extract_file_name(const char* s) {
  * observable. This may allow more aggressive handling of interfering branches.
  */
 #define PATCH_IS_NOP_INSTRUCTIONS (1 << 2)
-
 
 /**
  * To support syscall buffering, we replace syscall instructions with a "call"

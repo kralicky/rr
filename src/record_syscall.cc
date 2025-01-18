@@ -3367,14 +3367,11 @@ static void prepare_mmap_register_params(RecordTask* t) {
 }
 
 enum ScratchAddrType { FIXED_ADDRESS, DYNAMIC_ADDRESS };
-/* Pointer used when running RR in WINE. Memory below this address is
-   unmapped by WINE immediately after exec, so start the scratch buffer
-   here. */
-static const uintptr_t FIXED_SCRATCH_PTR = 0x68000000;
 
 static void init_scratch_memory(RecordTask* t,
                                 ScratchAddrType addr_type = DYNAMIC_ADDRESS) {
-  const int scratch_size = 512 * page_size();
+  const size_t scratch_size = 512 * page_size();
+  const uintptr_t fixed_scratch_ptr = RR_PAGE_ADDR - scratch_size;
   size_t sz = scratch_size;
   // The PROT_EXEC looks scary, and it is, but it's to prevent
   // this region from being coalesced with another anonymous
@@ -3391,7 +3388,7 @@ static void init_scratch_memory(RecordTask* t,
                                                                prot, flags, -1, 0);
     } else {
       t->scratch_ptr =
-          remote.infallible_mmap_syscall_if_alive(remote_ptr<void>(FIXED_SCRATCH_PTR),
+          remote.infallible_mmap_syscall_if_alive(remote_ptr<void>(fixed_scratch_ptr),
                                                   sz, prot, flags | MAP_FIXED, -1, 0);
     }
     t->scratch_size = scratch_size;

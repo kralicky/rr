@@ -1024,7 +1024,7 @@ _syscallbuf_final_exit_instruction:
         // the first two elements of stub_scratch_2 for the child.
         ldr     x15, [x15, stub_scratch_1 - preload_thread_locals]
         REG_AT_REG_OFFSET(0x20 /* pc */, 15, 16)
-        mov     x30, 0x70000000 // RR_PAGE_SYSCALL_TRACED
+        mov     x30, RR_PAGE_ADDR // RR_PAGE_SYSCALL_TRACED
         blr     x30
         // stub_scratch_2 content is maintained by rr
         // we need to put the syscall return address in stub_scratch_1

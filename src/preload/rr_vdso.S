@@ -19,7 +19,7 @@ PAGE_ALIGN
 // Current address is 0x70000000 - PRELOAD_LIBRARY_PAGE_SIZE
 // The following is equal to __rr_dl_runtime_resolve_prelude,
 // but doesn't introduce a relocation record.
-.quad  0x70000000 - PRELOAD_LIBRARY_PAGE_SIZE + 8
+.quad  RR_PAGE_ADDR - PRELOAD_LIBRARY_PAGE_SIZE + 8
 
 STARTPROC_GLOBAL(__rr_dl_runtime_resolve_prelude)
 fstenv -32(%rsp)
